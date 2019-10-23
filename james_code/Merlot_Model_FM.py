@@ -20,7 +20,8 @@ import pickle
 csv.field_size_limit(sys.maxsize)
 
 
-def loadUserFeatures(i_file, n_users, n_items, n_activities, user_observed_items):
+# TODO inform!
+def loadUserFeatures(co, i_file, n_users, n_items, n_activities, user_observed_items):
     print('Loading User Feature...')
     # Sparse Matrix of size U x (U + (IA))
     row = n_users
@@ -36,14 +37,16 @@ def loadUserFeatures(i_file, n_users, n_items, n_activities, user_observed_items
             # make sure it is symmetry
             A[src, des] = count
             A[des, src] = count
+    if co:
+        # NN Feature: user activities
+        for uid, items in user_observed_items.items():
+            for item in items:
+                A[uid, n_users + item] = 1
+                # A[uid,item] = 1
 
-    # NN Feature: user activities
-    for uid, items in user_observed_items.items():
-        for item in items:
-            A[uid, n_users + item] = 1
-    # A[uid,item] = 1
-
-    return normalize(A)
+        return normalize(A)
+    else:
+        return normalize(A)
 
 
 def loadUserFeatures_CO(i_file, n_users):
@@ -178,16 +181,17 @@ def loadTest(i_file, n_items, n_activities):
 
 # return query_users
 
-def loadUserTags(i_file):
-    print('Loading user tags...')
-    user_tags = {}
+# TODO inform!
+def loadTags(i_file):
+    print('Loading tags...')
+    tags = {}
     with open(i_file, encoding='utf-8') as f:
         reader = csv.reader(f, delimiter=',')
         for row in reader:
             uid = int(row[0])
-            tags = str(row[1]).split(';')
-            user_tags[uid] = list(map(int, tags))
-    return user_tags
+            tag = str(row[1]).split(';')
+            tags[uid] = list(map(int, tag))
+    return tags
 
 
 def loadTagItems(i_file):
@@ -383,8 +387,8 @@ def recommendActivity(i_train, i_test, i_user_graph, i_item_graph, i_item_neares
     i_features = loadItemFeatures(i_item_graph, i_item_nearest_neighbours, n_items, n_tags, n_activities)
 
     tag_items = loadTagItems(i_tag_items)
-
-    user_tags = loadUserTags(i_user_tags)
+    # TODO Inform!
+    user_tags = loadTags(i_user_tags)
 
     model = LightFM(no_components=NUM_COMPONENTS,
                     learning_rate=L_RATE,

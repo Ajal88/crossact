@@ -230,5 +230,3 @@ if __name__ == "__main__":
 
     item_features = loadItemFeatures(i_file=path_item_features, n_items=n_items, n_tags=n_tags)
     save_data(path=path_save_items_features, data=item_features)
-
-

@@ -1,5 +1,5 @@
-from Merlot_Model_FM import loadTest, generateSingleTestRecordSampleUnobserved, evaluateAveragePrecisionAtK
-from load_data_ver2 import load_data
+from james_code.Merlot_Model_FM import loadTest, generateSingleTestRecordSampleUnobserved, evaluateAveragePrecisionAtK
+from james_code.load_data_ver2 import load_data
 import numpy as np
 from sklearn.metrics import label_ranking_average_precision_score
 from sklearn.metrics import coverage_error

@@ -1,4 +1,4 @@
-from Merlot_Model_FM import loadInteractions, loadUserFeatures, loadItemFeatures, loadTagItems, loadUserTags, \
+from james_code.Merlot_Model_FM import loadInteractions, loadUserFeatures, loadItemFeatures, loadTagItems, loadUserTags, \
     loadUserFeatures_CO
 import pickle
 import scipy.sparse
